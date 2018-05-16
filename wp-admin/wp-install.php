@@ -111,7 +111,7 @@ if (!$got_links) {
            " link_visible enum ('Y','N') NOT NULL default 'Y',  " .
            " link_owner int NOT NULL DEFAULT '1',               " .
            " link_rating int NOT NULL DEFAULT '0',              " .
-           " link_updated DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', " .
+           " link_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " .
            " link_rel varchar(255) NOT NULL default '',         " .
            " PRIMARY KEY (link_id)                              " .
            ") ";
@@ -175,7 +175,7 @@ if ($got_row) {
 $query = "CREATE TABLE $tableposts (
   ID int(10) unsigned NOT NULL auto_increment,
   post_author int(4) NOT NULL default '0',
-  post_date datetime NOT NULL default '0000-00-00 00:00:00',
+  post_date TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
   post_content text NOT NULL,
   post_title text NOT NULL,
   post_category int(4) NOT NULL default '0',
@@ -236,7 +236,7 @@ CREATE TABLE $tablecomments (
   comment_author_email varchar(100) NOT NULL default '',
   comment_author_url varchar(100) NOT NULL default '',
   comment_author_IP varchar(100) NOT NULL default '',
-  comment_date datetime NOT NULL default '0000-00-00 00:00:00',
+  comment_date TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
   comment_content text NOT NULL,
   comment_karma int(11) NOT NULL default '0',
   PRIMARY KEY  (comment_ID)
@@ -294,7 +294,7 @@ CREATE TABLE $tableusers (
   user_ip varchar(15) NOT NULL default '',
   user_domain varchar(200) NOT NULL default '',
   user_browser varchar(200) NOT NULL default '',
-  dateYMDhour datetime NOT NULL default '0000-00-00 00:00:00',
+  dateYMDhour TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
   user_level int(2) unsigned NOT NULL default '0',
   user_aim varchar(50) NOT NULL default '',
   user_msn varchar(100) NOT NULL default '',
