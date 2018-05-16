@@ -1,4 +1,5 @@
 <?php
+require '../hotfix.php';
 $title = "Options";
 
 function add_magic_quotes($array) {
