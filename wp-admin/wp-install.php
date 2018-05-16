@@ -195,7 +195,7 @@ $q = $wpdb->query($query);
 
 <?php
 $now = date('Y-m-d H:i:s');
-$query = "INSERT INTO $tableposts (post_author, post_date, post_content, post_title, post_category) VALUES ('1', '$now', 'Welcome to WordPress. This is the first post. Edit or delete it, then start blogging!', 'Hello world!', '1')";
+$query = "INSERT INTO $tableposts (post_author, post_date, post_content, post_title, post_category, post_excerpt) VALUES ('1', '$now', 'Welcome to WordPress. This is the first post. Edit or delete it, then start blogging!', 'Hello world!', '1', '')";
 
 $q = $wpdb->query($query);
 ?>
@@ -308,7 +308,7 @@ $q = $wpdb->query($query);
 
 $random_password = substr(md5(uniqid(microtime())),0,6);
 
-$query = "INSERT INTO $tableusers (ID, user_login, user_pass, user_firstname, user_lastname, user_nickname, user_icq, user_email, user_url, user_ip, user_domain, user_browser, dateYMDhour, user_level, user_aim, user_msn, user_yim, user_idmode) VALUES ( '1', 'admin', '$random_password', '', '', 'admin', '0', '$admin_email', '', '127.0.0.1', '127.0.0.1', '', '00-00-0000 00:00:01', '10', '', '', '', 'nickname')";
+$query = "INSERT INTO $tableusers (ID, user_login, user_pass, user_firstname, user_lastname, user_nickname, user_icq, user_email, user_url, user_ip, user_domain, user_browser, dateYMDhour, user_level, user_aim, user_msn, user_yim, user_idmode) VALUES ( '1', 'admin', '$random_password', '', '', 'admin', '0', '$admin_email', '', '127.0.0.1', '127.0.0.1', '', CURRENT_TIMESTAMP(), '10', '', '', '', 'nickname')";
 $q = $wpdb->query($query);
 
 ?>
