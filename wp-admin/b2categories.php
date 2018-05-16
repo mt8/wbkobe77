@@ -1,5 +1,7 @@
 <?php
+require '../hotfix.php';
 $title = 'Categories';
+global $wpdb;
 /* <Categories> */
 
 function add_magic_quotes($array) {
@@ -48,7 +50,7 @@ case 'addcat':
 	$cat_name=addslashes($HTTP_POST_VARS["cat_name"]);
 
 	$query = "INSERT INTO $tablecategories (cat_ID,cat_name) VALUES ('0', '$cat_name')";
-	$result = mysqli_query($query) or die("Couldn't add category <b>$cat_name</b>");
+	$result = mysqli_query($wpdb->dbh,$query) or die("Couldn't add category <b>$cat_name</b>");
 	
 	header('Location: b2categories.php');
 
@@ -70,10 +72,10 @@ case 'Delete':
 		die ('Cheatin&#8217; uh?');
 	
 	$query = "DELETE FROM $tablecategories WHERE cat_ID = $cat_ID";
-	$result = mysqli_query($query) or die("Couldn't delete category <b>$cat_name</b>".mysqli_error());
+	$result = mysqli_query($wpdb->dbh,$query) or die("Couldn't delete category <b>$cat_name</b>".mysqli_error($wpdb->dbh));
 	
 	$query = "UPDATE $tableposts SET post_category='1' WHERE post_category='$cat_ID'";
-	$result = mysqli_query($query) or die("Couldn't reset category on posts where category was <b>$cat_name</b>");
+	$result = mysqli_query($wpdb->dbh,$query) or die("Couldn't reset category on posts where category was <b>$cat_name</b>");
 
 	header('Location: b2categories.php');
 
@@ -114,7 +116,7 @@ case 'editedcat':
 	$cat_ID = addslashes($HTTP_POST_VARS["cat_ID"]);
 
 	$query = "UPDATE $tablecategories SET cat_name='$cat_name' WHERE cat_ID = $cat_ID";
-	$result = mysqli_query($query) or die("Couldn't edit category <b>$cat_name</b>: ".mysqli_error());
+	$result = mysqli_query($wpdb->dbh,$query) or die("Couldn't edit category <b>$cat_name</b>: ".mysqli_error($wpdb->dbh));
 	
 	header('Location: b2categories.php');
 

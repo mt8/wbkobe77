@@ -557,10 +557,10 @@ function get_commentdata($comment_ID,$no_cache=0) { // less flexible, but saves 
 }
 
 function get_catname($cat_ID) {
-	global $tablecategories,$cache_catnames,$use_cache,$querycount;
+	global $tablecategories,$cache_catnames,$use_cache,$querycount,$wpdb;
 	if ((!$cache_catnames) || (!$use_cache)) {
 		$sql = "SELECT * FROM $tablecategories";
-		$result = mysqli_query($sql) or die('Oops, couldn\'t query the db for categories.');
+		$result = mysqli_query($wpdb->dbh,$sql) or die('Oops, couldn\'t query the db for categories.');
 		$querycount;
 		while ($post = mysqli_fetch_object($result)) {
 			$cache_catnames[$post->cat_ID] = $post->cat_name;
