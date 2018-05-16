@@ -49,7 +49,7 @@
 
 		function select($db)
 		{
-			if ( !@mysqli_select_db($db,$this->dbh))
+			if ( !@mysqli_select_db($this->dbh,$db))
 			{
 				$this->print_error("<ol id='error'>
 				<li><strong>Error selecting database <u>$db</u>!</strong></li>
