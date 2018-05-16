@@ -1,5 +1,8 @@
 <?php
+require '../hotfix.php';
 $title = "Options";
+
+global $wpdb;
 
 function add_magic_quotes($array) {
 	foreach ($array as $k => $v) {
@@ -51,9 +54,9 @@ case "update":
 	$newdate_format=addslashes($HTTP_POST_VARS["newdate_format"]);
 	
 	$query = "UPDATE $tablesettings SET posts_per_page=$newposts_per_page, what_to_show='$newwhat_to_show', archive_mode='$newarchive_mode', time_difference=$newtime_difference, AutoBR=$newautobr, time_format='$newtime_format', date_format='$newdate_format' WHERE ID = 1";
-	$result = mysqli_query($query);
+	$result = mysqli_query($wpdb->dbh,$query);
 	if ($result==false) {
-		$oops = "<b>ERROR</b>: couldn't update the options... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !<br />$query<br />".mysqli_errno().": ".mysqli_error();
+		$oops = "<b>ERROR</b>: couldn't update the options... please contact the <a href=\"mailto:$admin_email\">webmaster</a> !<br />$query<br />".mysqli_errno($wpdb->dbh).": ".mysqli_error($wpdb->dbh);
 		die ($oops);
 	}
 	
