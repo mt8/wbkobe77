@@ -77,7 +77,7 @@
 			global $EZSQL_ERROR;
 
 			// If no special error string then use mysql default..
-			if ( !$str ) $str = mysqli_error();
+			if ( !$str ) $str = mysqli_error($this->dbh);
 			
 			// Log this error to the global array..
 			$EZSQL_ERROR[] = array 
@@ -144,7 +144,7 @@
 			$this->last_query = $query;
 
 			// Perform the query via std mysqli_query function..
-			$this->result = mysqli_query($query, $this->dbh);
+			$this->result = mysqli_query($this->dbh,$query);
 
 			// If there was an insert, delete or update see how many rows were affected
 			// (Also, If there there was an insert take note of the insert_id
@@ -156,7 +156,7 @@
 				// This is true if the query starts with insert, delete or update
 				if ( preg_match("/^\\s*$word /i",$query) )
 				{
-					$this->rows_affected = mysqli_affected_rows();
+					$this->rows_affected = mysqli_affected_rows($this->dbh);
 					
 					// This gets the insert ID
 					if ( $word == 'insert' || $word == 'replace' )
@@ -169,7 +169,7 @@
 				
 			}
    
-			if ( mysqli_error() )
+			if ( mysqli_error($this->dbh) )
 			{
 
 				// If there is an error then take note of it..
