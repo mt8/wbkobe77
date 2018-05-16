@@ -1,4 +1,5 @@
 <?php
+require '../hotfix.php';
 $title = "Template(s) &amp; file editing";
 /* <Template> */
 
