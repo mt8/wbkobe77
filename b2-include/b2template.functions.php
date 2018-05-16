@@ -974,9 +974,9 @@ function comment_author_email() {
 
 function comment_author_link() {
 	global $comment;
-	$url = trim(stripslashes(&$comment->comment_author_url));
-	$email = &$comment->comment_author_email;
-	$author = stripslashes(&$comment->comment_author);
+	$url = trim(stripslashes($comment->comment_author_url));
+	$email = $comment->comment_author_email;
+	$author = stripslashes($comment->comment_author);
 
 	$url = str_replace('http://url', '', $url);
 	
