@@ -148,9 +148,9 @@ if ($i == "ASC")
 
 	if ($archive_mode == "monthly") {
 		echo "<select name=\"m\" style=\"width:120px;\">";
-		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date) FROM $tableposts ORDER BY post_date DESC";
+		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date) FROM $tableposts";
 		$querycount++;
-		$arc_result=mysqli_query($arc_sql) or die($arc_sql."<br />".mysqli_error());
+		$arc_result=mysqli_query($wpdb->dbh,$arc_sql) or die($arc_sql."<br />".mysqli_error($wpdb->dbh));
 		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$arc_year  = $arc_row["YEAR(post_date)"];
 			$arc_month = $arc_row["MONTH(post_date)"];
@@ -161,9 +161,9 @@ if ($i == "ASC")
 	} elseif ($archive_mode == "daily") {
 		echo "<select name=\"d\" style=\"width:120px;\">";
 		$archive_day_date_format = "Y/m/d";
-		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts ORDER BY post_date DESC";
+		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date) FROM $tableposts";
 		$querycount++;
-		$arc_result=mysqli_query($arc_sql) or die($arc_sql."<br />".mysqli_error());
+		$arc_result=mysqli_query($wpdb->dbh,$arc_sql) or die($arc_sql."<br />".mysqli_error($wpdb->dbh));
 		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$arc_year  = $arc_row["YEAR(post_date)"];
 			$arc_month = $arc_row["MONTH(post_date)"];
@@ -180,9 +180,9 @@ if ($i == "ASC")
 		$archive_week_start_date_format = "Y/m/d";
 		$archive_week_end_date_format   = "Y/m/d";
 		$archive_week_separator = " - ";
-		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date), WEEK(post_date) FROM $tableposts ORDER BY post_date DESC";
+		$arc_sql="SELECT DISTINCT YEAR(post_date), MONTH(post_date), DAYOFMONTH(post_date), WEEK(post_date) FROM $tableposts";
 		$querycount++;
-		$arc_result=mysqli_query($arc_sql) or die($arc_sql."<br />".mysqli_error());
+		$arc_result=mysqli_query($wpdb->dbh,$arc_sql) or die($arc_sql."<br />".mysqli_error($wpdb->dbh));
 		$arc_w_last = '';
 		while($arc_row = mysqli_fetch_array($arc_result)) {
 			$arc_year = $arc_row["YEAR(post_date)"];
@@ -203,7 +203,7 @@ if ($i == "ASC")
 		echo '<select name="p" style="width:120px;">';
 		$requestarc = " SELECT ID,post_date,post_title FROM $tableposts ORDER BY post_date DESC";
 		$querycount++;
-		$resultarc = mysqli_query($requestarc);
+		$resultarc = mysqli_query($wpdb->dbh,$requestarc);
 		while($row=mysqli_fetch_object($resultarc)) {
 			if ($row->post_date != "0000-00-00 00:00:00") {
 				echo "<option value=\"".$row->ID."\">";
