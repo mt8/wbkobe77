@@ -7,6 +7,7 @@
 
 /* Start editing */
 
+error_reporting(E_ALL & ~E_NOTICE);
 include_once 'hotfix.php';
 
 // $siteurl is your blog's URL: for example, 'http://mydomain.com/wordpress' (no trailing slash !)

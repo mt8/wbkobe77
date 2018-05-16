@@ -1,4 +1,5 @@
 <?php
+require '../hotfix.php';
 $title = "Post / Edit";
 /* <Edit> */
 

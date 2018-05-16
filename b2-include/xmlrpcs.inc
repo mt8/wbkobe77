@@ -151,7 +151,7 @@ function xmlrpc_debugmsg($m) {
 class xmlrpc_server {
   var $dmap=array();
 
-  function xmlrpc_server($dispMap, $serviceNow=1) {
+  function __construct($dispMap, $serviceNow=1) {
 		global $HTTP_RAW_POST_DATA;
 		// dispMap is a despatch array of methods
 		// mapped to function names and signatures
