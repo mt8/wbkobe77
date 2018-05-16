@@ -29,6 +29,7 @@
 include_once('../b2config.php');
 include_once('../wp-links/links.config.php');
 include_once("../wp-links/links.php");
+global $wpdb;
 
 $title = 'Manage Links';
 
@@ -104,7 +105,7 @@ switch ($action) {
            . addslashes($link_image) . "', '$link_target', $link_category, '"
            . addslashes($link_description) . "', '$link_visible', $user_ID, $link_rating, '" . addslashes($link_rel) ."')";
 
-    $sql_result = mysqli_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysqli_error());
+    $sql_result = mysqli_query($wpdb->dbh,$sql) or die("Couldn't execute query."."sql=[$sql]". mysqli_error($wpdb->dbh));
 
     header('Location: linkmanager.php');
     break;
@@ -377,7 +378,7 @@ switch ($action) {
         <td>
 <?php
     $query = "SELECT cat_id, cat_name, auto_toggle FROM $tablelinkcategories ORDER BY cat_id";
-    $result = mysqli_query($query) or die("Couldn't execute query. ".mysqli_error());
+    $result = mysqli_query($wpdb->dbh,$query) or die("Couldn't execute query. ".mysqli_error($wpdb->dbh));
     echo "        <select name=\"cat_id\">\n";
     echo "          <option value=\"All\"";
     if ($cat_id == 'All')
@@ -550,7 +551,7 @@ LINKS;
         <td>
 <?php
     $query = "SELECT cat_id, cat_name, auto_toggle FROM $tablelinkcategories ORDER BY cat_id";
-    $result = mysqli_query($query) or die("Couldn't execute query. ".mysqli_error());
+    $result = mysqli_query($wpdb->dbh,$query) or die("Couldn't execute query. ".mysqli_error($wpdb->dbh));
     echo "        <select name=\"category\" size=\"1\">\n";
     while($row = mysqli_fetch_object($result)) {
       echo "          <option value=\"".$row->cat_id."\"";
