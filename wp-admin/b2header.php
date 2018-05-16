@@ -14,9 +14,9 @@ if (!isset($debug))		$debug=0;
 timer_start();
 
 get_currentuserinfo();
-
+global $wpdb;
 $request = "SELECT * FROM $tablesettings";
-$result = mysqli_query($request);
+$result = mysqli_query($wpdb->dbh,$request);
 $querycount++;
 while($row = mysqli_fetch_object($result)) {
 	$posts_per_page=$row->posts_per_page;
