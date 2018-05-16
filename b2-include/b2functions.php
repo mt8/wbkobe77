@@ -577,9 +577,9 @@ function profile($user_login) {
 }
 
 function dropdown_categories($blog_ID=1) {
-	global $postdata,$tablecategories,$mode,$querycount;
+	global $postdata,$tablecategories,$mode,$querycount,$wpdb;
 	$query="SELECT * FROM $tablecategories";
-	$result=mysqli_query($query);
+	$result=mysqli_query($wpdb->dbh,$query);
 	++$querycount;
 	$width = ($mode=="sidebar") ? "100%" : "170px";
 	echo '<select name="post_category" style="width:'.$width.';" tabindex="2" id="category">';
