@@ -389,7 +389,7 @@ class xmlrpc_client {
   var $cert="";
   var $certpass="";
   
-  function xmlrpc_client($path, $server, $port=0) {
+  function __construct($path, $server, $port=0) {
     $this->port=$port; $this->server=$server; $this->path=$path;
   }
 
@@ -541,7 +541,7 @@ class xmlrpcresp {
   var $fs;
   var $hdrs;
 
-  function xmlrpcresp($val, $fcode=0, $fstr="") {
+  function __construct($val, $fcode=0, $fstr="") {
     if ($fcode!=0) {
       $this->xv=0;
       $this->fn=$fcode;
@@ -603,7 +603,7 @@ class xmlrpcmsg {
   var $params=array();
   var $debug=0;
 
-  function xmlrpcmsg($meth, $pars=0) {
+  function __construct($meth, $pars=0) {
 		$this->methodname=$meth;
 		if (is_array($pars) && sizeof($pars)>0) {
 			for($i=0; $i<sizeof($pars); $i++) 
@@ -773,7 +773,7 @@ class xmlrpcval {
   var $me=array();
   var $mytype=0;
 
-  function xmlrpcval($val=-1, $type="") {
+  function __construct($val=-1, $type="") {
 		global $xmlrpcTypes;
 		$this->me=array();
 		$this->mytype=0;
