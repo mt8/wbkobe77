@@ -3,7 +3,7 @@
 
 	<?php // don't touch these 2 lines
 	$queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<trackback />%' ORDER BY comment_date";
-	$resultc = mysql_query($queryc); if ($resultc) {
+	$resultc = mysqli_query($queryc); if ($resultc) {
 	?>
 
 <h2>Trackbacks</h2>
@@ -12,7 +12,7 @@
 <p><em><?php trackback_url() ?></em></p>
 
 <ol id="trackbacks">
-	<?php /* this line is b2's motor, do not delete it */ while($rowc = mysql_fetch_object($resultc)) { $commentdata = get_commentdata($rowc->comment_ID); ?>
+	<?php /* this line is b2's motor, do not delete it */ while($rowc = mysqli_fetch_object($resultc)) { $commentdata = get_commentdata($rowc->comment_ID); ?>
 	<li id="trackback-<?php comment_ID() ?>">
 	<?php comment_text() ?>
 	

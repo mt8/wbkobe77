@@ -64,7 +64,7 @@ switch ($action) {
       }
 
       $query="INSERT INTO $tablelinkcategories (cat_id,cat_name, auto_toggle) VALUES ('0', '$cat_name', '$auto_toggle')";
-      $result=mysql_query($query) or die("Couldn't add category <b>$cat_name</b>".mysql_error());
+      $result=mysqli_query($query) or die("Couldn't add category <b>$cat_name</b>".mysqli_error());
       
       header("Location: linkcategories.php");
     break;
@@ -85,10 +85,10 @@ switch ($action) {
     die ("Cheatin' uh ?");
     
     $query="DELETE FROM $tablelinkcategories WHERE cat_id=\"$cat_id\"";
-    $result=mysql_query($query) or die("Couldn't delete link category <b>$cat_name</b>".mysql_error());
+    $result=mysqli_query($query) or die("Couldn't delete link category <b>$cat_name</b>".mysqli_error());
     
     $query="UPDATE $tablelinks SET link_category=1 WHERE link_category='$cat_id'";
-    $result=mysql_query($query) or die("Couldn't reset category on links where category was <b>$cat_name</b>");
+    $result=mysqli_query($query) or die("Couldn't reset category on links where category was <b>$cat_name</b>");
 
     header("Location: linkcategories.php");
     break;
@@ -130,7 +130,7 @@ switch ($action) {
     $auto_toggle=$HTTP_POST_VARS["auto_toggle"];
 
     $query="UPDATE $tablelinkcategories SET cat_name='$cat_name', auto_toggle='$auto_toggle' WHERE cat_id=$cat_id";
-    $result=mysql_query($query) or die("Couldn't edit link category <b>$cat_name</b>: ".$query.mysql_error());
+    $result=mysqli_query($query) or die("Couldn't edit link category <b>$cat_name</b>: ".$query.mysqli_error());
     
     header("Location: linkcategories.php");
     break;
@@ -152,9 +152,9 @@ switch ($action) {
             <b>Edit</b> a link category:<br />
 <?php
 $query = "SELECT cat_id, cat_name, auto_toggle FROM $tablelinkcategories ORDER BY cat_id";
-$result = mysql_query($query) or die("Couldn't execute query. ".mysql_error());
+$result = mysqli_query($query) or die("Couldn't execute query. ".mysqli_error());
     echo "        <select name=\"cat_id\">\n";
-    while($row = mysql_fetch_object($result)) {
+    while($row = mysqli_fetch_object($result)) {
         echo "          <option value=\"".$row->cat_id."\"";
         if ($row->cat_id == $cat_id)
             echo ' selected';

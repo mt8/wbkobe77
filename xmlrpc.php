@@ -101,13 +101,13 @@ function b2newpost($m) {
 		}
 
 		$sql = "INSERT INTO $tableposts (post_author, post_date, post_content, post_title, post_category) VALUES ('$user_ID','$now','$content','$post_title','$category')";
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 
 		if (!$result)
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
            "For some strange yet very annoying reason, your entry couldn't be posted.");
 
-		$post_ID = mysql_insert_id();
+		$post_ID = mysqli_insert_id();
 
 		if (!isset($blog_ID)) { $blog_ID = 1; }
 
@@ -157,10 +157,10 @@ function b2getcategories($m) {
 	if (user_pass_ok($username,$password)) {
 
 		$sql = "SELECT * FROM $tablecategories ORDER BY cat_ID ASC";
-		$result = mysql_query($sql) or die($sql);
+		$result = mysqli_query($sql) or die($sql);
 
 		$i = 0;
-		while($row = mysql_fetch_object($result)) {
+		while($row = mysqli_fetch_object($result)) {
 			$cat_name = $row->cat_name;
 			$cat_ID = $row->cat_ID;
 
@@ -243,8 +243,8 @@ function b2_getPostURL($m) {
 				case 'weekly':
 					if((!isset($cacheweekly)) || (empty($cacheweekly[$postdata['Date']]))) {
 						$sql = "SELECT WEEK('".$postdata['Date']."')";
-						$result = mysql_query($sql);
-						$row = mysql_fetch_row($result);
+						$result = mysqli_query($sql);
+						$row = mysqli_fetch_row($result);
 						$cacheweekly[$postdata['Date']] = $row[0];
 					}
 					$post_URL = $blog_URL.$querystring_start.'m'.$querystring_equal.substr($postdata['Date'],0,4).$querystring_separator.'w'.$querystring_equal.$cacheweekly[$postdata['Date']].'#'.$title;
@@ -329,13 +329,13 @@ function bloggernewpost($m) {
 		$now = date("Y-m-d H:i:s",(time() + ($time_difference * 3600)));
 
 		$sql = "INSERT INTO $tableposts (post_author, post_date, post_content, post_title, post_category) VALUES ('$user_ID','$now','$content','$post_title','$post_category')";
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 
 		if (!$result)
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
            "For some strange yet very annoying reason, your entry couldn't be posted.");
 
-		$post_ID = mysql_insert_id();
+		$post_ID = mysqli_insert_id();
 
 		if (!isset($blog_ID)) { $blog_ID = 1; }
 
@@ -387,7 +387,7 @@ function bloggereditpost($m) {
 	$newcontent = $newcontent->scalarval();
 
 	$sql = "SELECT * FROM $tableposts WHERE ID = '$post_ID'";
-	$result = @mysql_query($sql);
+	$result = @mysqli_query($sql);
 
 	if (!$result)
 		return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
@@ -422,7 +422,7 @@ function bloggereditpost($m) {
 		$content = format_to_post($content);
 
 		$sql = "UPDATE $tableposts SET post_content='$content', post_title='$post_title', post_category='$post_category' WHERE ID = '$post_ID'";
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 
 		if (!$result)
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
@@ -473,7 +473,7 @@ function bloggerdeletepost($m) {
 	$newcontent = $newcontent->scalarval();
 
 	$sql = "SELECT * FROM $tableposts WHERE ID = '$post_ID'";
-	$result = @mysql_query($sql);
+	$result = @mysqli_query($sql);
 
 	if (!$result)
 		return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
@@ -500,7 +500,7 @@ function bloggerdeletepost($m) {
 		}
 
 		$sql = "DELETE FROM $tableposts WHERE ID = '$post_ID'";
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 
 		if (!$result)
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
@@ -543,9 +543,9 @@ function bloggergetusersblogs($m) {
 	dbconnect();
 
 	$sql = "SELECT user_level FROM $tableusers WHERE user_login = '$user_login' AND user_level > 3";
-	$result = mysql_query($sql) or die($sql."<br />".mysql_error());
+	$result = mysqli_query($sql) or die($sql."<br />".mysqli_error());
 
-	$is_admin = mysql_num_rows($result);
+	$is_admin = mysqli_num_rows($result);
 
 	$struct = new xmlrpcval(array("isAdmin" => new xmlrpcval($is_admin,"boolean"),
 									"url" => new xmlrpcval($siteurl."/".$blogfilename),
@@ -682,15 +682,15 @@ function bloggergetrecentposts($m) {
 	if (user_pass_ok($username,$password)) {
 
 		$sql = "SELECT * FROM $tableposts WHERE post_category > 0 ORDER BY post_date DESC".$limit;
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 		if (!$result)
 			return new xmlrpcresp(0, $xmlrpcerruser+2, // user error 2
-           "For some strange yet very annoying reason, the entries couldn't be fetched.".mysql_error());
+           "For some strange yet very annoying reason, the entries couldn't be fetched.".mysqli_error());
 		
 		$data = new xmlrpcval("","array");
 
 		$i = 0;
-		while($row = mysql_fetch_object($result)) {
+		while($row = mysqli_fetch_object($result)) {
 			$postdata = array(
 				"ID" => $row->ID, 
 				"Author_ID" => $row->post_author, 
@@ -955,8 +955,8 @@ function pingback_ping($m) {
 				// ...or a string #title, a little more complicated
 				$title = preg_replace('/[^a-zA-Z0-9]/', '.', $urltest['fragment']);
 				$sql = "SELECT ID FROM $tableposts WHERE post_title RLIKE '$title'";
-				$result = mysql_query($sql) or die("Query: $sql\n\nError: ".mysql_error());
-				$blah = mysql_fetch_array($result);
+				$result = mysqli_query($sql) or die("Query: $sql\n\nError: ".mysqli_error());
+				$blah = mysqli_fetch_array($result);
 				$post_ID = $blah['ID'];
 				$way = 'from the fragment (title)';
 			}
@@ -967,17 +967,17 @@ function pingback_ping($m) {
 		debug_fwrite($log, "Found post ID $way: $post_ID\n");
 
 		$sql = 'SELECT post_author FROM '.$tableposts.' WHERE ID = '.$post_ID;
-		$result = mysql_query($sql);
+		$result = mysqli_query($sql);
 
-		if (mysql_num_rows($result)) {
+		if (mysqli_num_rows($result)) {
 
 			debug_fwrite($log, 'Post exists'."\n");
 
 			// Let's check that the remote site didn't already pingback this entry
 			$sql = 'SELECT * FROM '.$tablecomments.' WHERE comment_post_ID = '.$post_ID.' AND comment_author_url = \''.$pagelinkedfrom.'\' AND comment_content LIKE \'%<pingback />%\'';
-			$result = mysql_query($sql);
+			$result = mysqli_query($sql);
 
-			if (mysql_num_rows($result) || (1==1)) {
+			if (mysqli_num_rows($result) || (1==1)) {
 			
 				// very stupid, but gives time to the 'from' server to publish !
 				sleep(1);
@@ -1025,7 +1025,7 @@ function pingback_ping($m) {
 					$original_title = $title;
 					$title = addslashes(strip_tags(trim($title)));
 					$sql = "INSERT INTO $tablecomments (comment_post_ID, comment_author, comment_author_url, comment_date, comment_content) VALUES ($post_ID, '$title', '$pagelinkedfrom', NOW(), '$context')";
-					$consulta = mysql_query($sql);
+					$consulta = mysqli_query($sql);
 
 					if ($comments_notify) {
 

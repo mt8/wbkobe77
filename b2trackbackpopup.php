@@ -1,5 +1,5 @@
 <?php /* Don't remove this line, it calls the b2 function files ! */
-$blog=1; include ("blog.header.php"); while($row = mysql_fetch_object($result)) { start_b2();
+$blog=1; include ("blog.header.php"); while($row = mysqli_fetch_object($result)) { start_b2();
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,11 +26,11 @@ $blog=1; include ("blog.header.php"); while($row = mysql_fetch_object($result)) 
 <p><em><?php trackback_url() ?></em></p>
 
 
-	<?php /* do not delete this line */ $queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<trackback />%' ORDER BY comment_date"; $resultc = mysql_query($queryc); if ($resultc) { ?>
+	<?php /* do not delete this line */ $queryc = "SELECT * FROM $tablecomments WHERE comment_post_ID = $id AND comment_content LIKE '%<trackback />%' ORDER BY comment_date"; $resultc = mysqli_query($queryc); if ($resultc) { ?>
 
 <h2>Trackbacks</h2>
 <ol id="trackbacks">
-	<?php /* this line is b2's motor, do not delete it */ $wxcvbn_tb=0; while($rowc = mysql_fetch_object($resultc)) { $commentdata = get_commentdata($rowc->comment_ID); $wxcvbn_tb++; ?>
+	<?php /* this line is b2's motor, do not delete it */ $wxcvbn_tb=0; while($rowc = mysqli_fetch_object($resultc)) { $commentdata = get_commentdata($rowc->comment_ID); $wxcvbn_tb++; ?>
 	
 <a name="tb<?php comment_ID() ?>"></a>
 	

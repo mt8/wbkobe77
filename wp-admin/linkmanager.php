@@ -95,7 +95,7 @@ switch ($action) {
     // need to make the others invisible before we add this new one.
     if (($auto_toggle == 'Y') && ($link_visible == 'Y')) {
       $sql = "UPDATE $tablelinks set link_visible = 'N' WHERE link_category = $link_category";
-      $sql_result = mysql_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysql_error());
+      $sql_result = mysqli_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysqli_error());
     }
 
     $sql = "INSERT INTO $tablelinks (link_url, link_name, link_image, link_target, link_category, link_description, link_visible, link_owner, link_rating, link_rel) " .
@@ -104,7 +104,7 @@ switch ($action) {
            . addslashes($link_image) . "', '$link_target', $link_category, '"
            . addslashes($link_description) . "', '$link_visible', $user_ID, $link_rating, '" . addslashes($link_rel) ."')";
 
-    $sql_result = mysql_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysql_error());
+    $sql_result = mysqli_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysqli_error());
 
     header('Location: linkmanager.php');
     break;
@@ -145,7 +145,7 @@ switch ($action) {
       // need to make the others invisible before we update this one.
       if (($auto_toggle == 'Y') && ($link_visible == 'Y')) {
         $sql = "UPDATE $tablelinks set link_visible = 'N' WHERE link_category = $link_category";
-        $sql_result = mysql_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysql_error());
+        $sql_result = mysqli_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysqli_error());
       }
 
       $sql = "UPDATE $tablelinks SET link_url='" . addslashes($link_url) . "',\n " .
@@ -156,7 +156,7 @@ switch ($action) {
              " link_rel='" . addslashes($link_rel) . "'\n" .
              " WHERE link_id=$link_id";
       //error_log($sql);
-      $sql_result = mysql_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysql_error());
+      $sql_result = mysqli_query($sql) or die("Couldn't execute query."."sql=[$sql]". mysqli_error());
 
     } // end if save
     setcookie('links_show_cat_id', $links_show_cat_id, time()+600);
@@ -175,7 +175,7 @@ switch ($action) {
       die ("Cheatin' uh ?");
 
     $sql = "DELETE FROM $tablelinks WHERE link_id = '$link_id'";
-    $sql_result = mysql_query($sql) or die("Couldn't execute query.".mysql_error());
+    $sql_result = mysqli_query($sql) or die("Couldn't execute query.".mysqli_error());
 
     if (isset($links_show_cat_id) && ($links_show_cat_id != ''))
         $cat_id = $links_show_cat_id;
@@ -202,8 +202,8 @@ switch ($action) {
       " FROM $tablelinks " .
       " WHERE link_id = $link_id";
 
-    $result = mysql_query($sql) or die("Couldn't execute query.".mysql_error());
-    if ($row = mysql_fetch_object($result)) {
+    $result = mysqli_query($sql) or die("Couldn't execute query.".mysqli_error());
+    if ($row = mysqli_fetch_object($result)) {
       $link_url = $row->link_url;
       $link_name = stripslashes($row->link_name);
       $link_image = $row->link_image;
@@ -287,9 +287,9 @@ switch ($action) {
       <td> 
         <?php
     $query = "SELECT cat_id, cat_name, auto_toggle FROM $tablelinkcategories ORDER BY cat_id";
-    $result = mysql_query($query) or die("Couldn't execute query. ".mysql_error());
+    $result = mysqli_query($query) or die("Couldn't execute query. ".mysqli_error());
     echo "        <select name=\"category\" size=\"1\">\n";
-    while($row = mysql_fetch_object($result)) {
+    while($row = mysqli_fetch_object($result)) {
       echo "          <option value=\"".$row->cat_id."\"";
       if ($row->cat_id == $link_category)
         echo " selected";
@@ -377,13 +377,13 @@ switch ($action) {
         <td>
 <?php
     $query = "SELECT cat_id, cat_name, auto_toggle FROM $tablelinkcategories ORDER BY cat_id";
-    $result = mysql_query($query) or die("Couldn't execute query. ".mysql_error());
+    $result = mysqli_query($query) or die("Couldn't execute query. ".mysqli_error());
     echo "        <select name=\"cat_id\">\n";
     echo "          <option value=\"All\"";
     if ($cat_id == 'All')
       echo " selected";
     echo "> All</option>\n";
-    while($row = mysql_fetch_object($result)) {
+    while($row = mysqli_fetch_object($result)) {
       echo "          <option value=\"".$row->cat_id."\"";
       if ($row->cat_id == $cat_id)
         echo " selected";
@@ -550,9 +550,9 @@ LINKS;
         <td>
 <?php
     $query = "SELECT cat_id, cat_name, auto_toggle FROM $tablelinkcategories ORDER BY cat_id";
-    $result = mysql_query($query) or die("Couldn't execute query. ".mysql_error());
+    $result = mysqli_query($query) or die("Couldn't execute query. ".mysqli_error());
     echo "        <select name=\"category\" size=\"1\">\n";
-    while($row = mysql_fetch_object($result)) {
+    while($row = mysqli_fetch_object($result)) {
       echo "          <option value=\"".$row->cat_id."\"";
       if ($row->cat_id == $cat_id)
         echo " selected";
