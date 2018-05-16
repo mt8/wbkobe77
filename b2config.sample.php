@@ -7,6 +7,8 @@
 
 /* Start editing */
 
+include_once 'hotfix.php';
+
 // $siteurl is your blog's URL: for example, 'http://mydomain.com/wordpress' (no trailing slash !)
 // $blogfilename is the name of the default file for your blog
 // $blogname is the name of your blog
