@@ -57,7 +57,7 @@ function upgrade_071() {
 
 function upgrade_072() {
 	global $wpdb, $tableposts, $tablelinks, $tablelinkcategories, $tableoptions, $tableoptiontypes, $tableoptiongroups, $tableoptiongroup_options, $tableoptionvalues, $tablecategories;
-	maybe_add_column($tablelinks, 'link_notes', "ALTER TABLE $tablelinks ADD COLUMN link_notes MEDIUMTEXT NOT NULL DEFAULT '' ");
+	maybe_add_column($tablelinks, 'link_notes', "ALTER TABLE $tablelinks ADD COLUMN link_notes MEDIUMTEXT ");
 	maybe_add_column($tablelinkcategories, 'show_images', "ALTER TABLE $tablelinkcategories ADD COLUMN show_images enum('Y','N') NOT NULL default 'Y'");
 	maybe_add_column($tablelinkcategories, 'show_description', "ALTER TABLE $tablelinkcategories ADD COLUMN show_description enum('Y','N') NOT NULL default 'Y'");
 	maybe_add_column($tablelinkcategories, 'show_rating', "ALTER TABLE $tablelinkcategories ADD COLUMN show_rating enum('Y','N') NOT NULL default 'Y'");
@@ -80,7 +80,7 @@ function upgrade_072() {
 	  option_value varchar(255) NOT NULL default '',
 	  option_width int NOT NULL default 20,
 	  option_height int NOT NULL default 8,
-	  option_description tinytext NOT NULL default '',
+	  option_description text,
 	  option_admin_level int NOT NULL DEFAULT '1',
 	  PRIMARY KEY (option_id, blog_id, option_name)
 	)
@@ -459,7 +459,7 @@ function upgrade_100() {
 	maybe_add_column($tableposts, 'post_name', "ALTER TABLE `$tableposts` ADD `post_name` VARCHAR(200) NOT NULL");
 	maybe_add_column($tableposts, 'to_ping', "ALTER TABLE $tableposts ADD `to_ping` TEXT NOT NULL");
 	maybe_add_column($tableposts, 'pinged', "ALTER TABLE $tableposts ADD `pinged` TEXT NOT NULL");
-	maybe_add_column($tableposts, 'post_modified', "ALTER TABLE $tableposts ADD `post_modified` DATETIME NOT NULL");
+	maybe_add_column($tableposts, 'post_modified', "ALTER TABLE $tableposts ADD `post_modified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");
 	maybe_add_column($tableposts, 'post_content_filtered', "ALTER TABLE $tableposts ADD `post_content_filtered` TEXT NOT NULL");
 	maybe_add_column($tablecategories, 'category_nicename', "ALTER TABLE `$tablecategories` ADD `category_nicename` VARCHAR(200) NOT NULL");	
 	maybe_add_column($tablecategories, 'category_description', "ALTER TABLE `$tablecategories` ADD `category_description` TEXT NOT NULL");
@@ -552,14 +552,14 @@ function upgrade_100() {
 		$wpdb->query("INSERT INTO `$tableoptions` 
 			(`option_id`, `blog_id`, `option_name`, `option_can_override`, `option_type`, `option_value`, `option_width`, `option_height`, `option_description`, `option_admin_level`) 
 			VALUES 
-			('', '0', 'permalink_structure', 'Y', '3', '', '20', '8', 'How the permalinks for your site are constructed. See <a href=\"options-permalink.php\">permalink options page</a> for necessary mod_rewrite rules and more information.', '8');");
+			(NULL, '0', 'permalink_structure', 'Y', '3', '', '20', '8', 'How the permalinks for your site are constructed. See <a href=\"options-permalink.php\">permalink options page</a> for necessary mod_rewrite rules and more information.', '8');");
 		}
 		
 	if (!$wpdb->get_var("SELECT option_name FROM $tableoptions WHERE option_name = 'gzipcompression'")) { // If it's not already there
 		$wpdb->query("INSERT INTO `$tableoptions` 
 			(`option_id`, `blog_id`, `option_name`, `option_can_override`, `option_type`, `option_value`, `option_width`, `option_height`, `option_description`, `option_admin_level`) 
 			VALUES 
-			('', '0', 'gzipcompression', 'Y', '2', '0', '20', '8', 'Whether your output should be gzipped or not. Enable this if you don&#8217;t already have mod_gzip running.', '8');");
+			(NULL, '0', 'gzipcompression', 'Y', '2', '0', '20', '8', 'Whether your output should be gzipped or not. Enable this if you don&#8217;t already have mod_gzip running.', '8');");
 		$optionid = $wpdb->get_var("SELECT option_id FROM $tableoptions WHERE option_name = 'gzipcompression'");
 		$wpdb->query("INSERT INTO $tableoptiongroup_options
 			(group_id, option_id, seq)
@@ -570,7 +570,7 @@ function upgrade_100() {
 		$wpdb->query("INSERT INTO `$tableoptions` 
 			( `option_id` , `blog_id` , `option_name` , `option_can_override` , `option_type` , `option_value` , `option_width` , `option_height` , `option_description` , `option_admin_level` )
 			VALUES 
-			('', '0', 'hack_file', 'Y', '2', '0', '20', '8', 'Set this to true if you plan to use a hacks file. This is a place for you to store code hacks that won&#8217;t be overwritten when you upgrade. The file must be in your wordpress root and called <code>my-hacks.php</code>', '8')");
+			(NULL, '0', 'hack_file', 'Y', '2', '0', '20', '8', 'Set this to true if you plan to use a hacks file. This is a place for you to store code hacks that won&#8217;t be overwritten when you upgrade. The file must be in your wordpress root and called <code>my-hacks.php</code>', '8')");
 		$optionid = $wpdb->get_var("SELECT option_id FROM $tableoptions WHERE option_name = 'hack_file'");
 		$wpdb->query("INSERT INTO $tableoptiongroup_options
 			(group_id, option_id, seq)

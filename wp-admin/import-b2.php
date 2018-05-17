@@ -120,15 +120,15 @@ if (!$got_links) {
            " link_visible enum ('Y','N') NOT NULL default 'Y',  " .
            " link_owner int NOT NULL DEFAULT '1',               " .
            " link_rating int NOT NULL DEFAULT '0',              " .
-           " link_updated DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00', " .
+           " link_updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, " .
            " link_rel varchar(255) NOT NULL default '',         " .
            " link_notes MEDIUMTEXT NOT NULL default '',         " .
            " PRIMARY KEY (link_id)                              " .
            ") ";
     $result = mysql_query($sql) or print ("Can't create the table '$tablelinks' in the database.<br />" . $sql . "<br />" . mysql_error());
-	$links = mysql_query("INSERT INTO $tablelinks VALUES ('', 'http://wordpress.org/', 'WordPress', '', '', 1, '', 'Y', 1, 0, '0000-00-00 00:00:00', '');");
-	$links = mysql_query("INSERT INTO $tablelinks VALUES ('', 'http://photomatt.net/', 'Matt', '', '', 1, '', 'Y', 1, 0, '0000-00-00 00:00:00', '');");
-	$links = mysql_query("INSERT INTO $tablelinks VALUES ('', 'http://zed1.com/b2/', 'Mike', '', '', 1, '', 'Y', 1, 0, '0000-00-00 00:00:00', '');");
+	$links = mysql_query("INSERT INTO $tablelinks VALUES ('', 'http://wordpress.org/', 'WordPress', '', '', 1, '', 'Y', 1, 0, CURRENT_TIMESTAMP(), '');");
+	$links = mysql_query("INSERT INTO $tablelinks VALUES ('', 'http://photomatt.net/', 'Matt', '', '', 1, '', 'Y', 1, 0, CURRENT_TIMESTAMP(), '');");
+	$links = mysql_query("INSERT INTO $tablelinks VALUES ('', 'http://zed1.com/b2/', 'Mike', '', '', 1, '', 'Y', 1, 0, CURRENT_TIMESTAMP(), '');");
 
     if ($result != false) {
         echo "<p>Table '$tablelinks' created OK</p>\n";
@@ -144,7 +144,7 @@ if (!$got_links) {
             echo "<p>You have  column link_updated. Good!</p>\n";
         }
     } else {
-        $query = "ALTER TABLE $tablelinks ADD COLUMN link_updated DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'";
+        $query = "ALTER TABLE $tablelinks ADD COLUMN link_updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP";
         $q = mysql_query($query) or mysql_doh("Doh, couldn't add column.", $query, mysql_error());
         echo "<p>Added column link_updated...</p>\n";
     }
