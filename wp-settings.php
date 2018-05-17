@@ -23,11 +23,13 @@ $tableoptiongroup_options = $table_prefix . 'optiongroup_options';
 define('WPINC', 'wp-includes');
 require (ABSPATH . WPINC . '/wp-db.php');
 
+if ( $_SERVER['PHP_SELF'] != '/wp-admin/upgrade.php' ) {
 $wpdb->hide_errors();
 if (!$wpdb->get_row("SELECT * FROM $tableoptions LIMIT 1") && !strstr($HTTP_SERVER_VARS['REQUEST_URI'], 'install.php')) {
 	die("It doesn't look like you've installed WP yet. Try running <a href='wp-admin/install.php'>install.php</a>.");
 }
 $wpdb->show_errors();
+}
 
 // This is the name of the include directory. No "/" allowed.
 
