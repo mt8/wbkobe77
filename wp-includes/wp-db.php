@@ -26,7 +26,7 @@
 		// ==================================================================
 		//	DB Constructor - connects to the server and selects a database
 
-		function wpdb($dbuser, $dbpassword, $dbname, $dbhost)
+		function __construct($dbuser, $dbpassword, $dbname, $dbhost)
 		{
 
 			$this->dbh = @mysql_connect($dbhost,$dbuser,$dbpassword);
