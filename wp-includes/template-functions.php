@@ -230,7 +230,7 @@ function get_archives($type='', $limit='', $format='html', $before = "", $after 
 	$now = date('Y-m-d H:i:s',(time() + ($time_difference * 3600)));
 
 	if ('monthly' == $type) {
-		$arcresults = $wpdb->get_results("SELECT DISTINCT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $tableposts WHERE post_date < '$now' AND post_status = 'publish' GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date DESC" . $limit);
+		$arcresults = $wpdb->get_results("SELECT DISTINCT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $tableposts WHERE post_date < '$now' AND post_status = 'publish' GROUP BY YEAR(post_date), MONTH(post_date)" . $limit);
         if ($arcresults) {
             foreach ($arcresults as $arcresult) {
                 $url  = get_month_link($arcresult->year,   $arcresult->month);
@@ -244,7 +244,7 @@ function get_archives($type='', $limit='', $format='html', $before = "", $after 
             }
         }
 	} elseif ('daily' == $type) {
-		$arcresults = $wpdb->get_results("SELECT DISTINCT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, DAYOFMONTH(post_date) AS `dayofmonth` FROM $tableposts WHERE post_date < '$now' AND post_status = 'publish' ORDER BY post_date DESC" . $limit);
+		$arcresults = $wpdb->get_results("SELECT DISTINCT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, DAYOFMONTH(post_date) AS `dayofmonth` FROM $tableposts WHERE post_date < '$now' AND post_status = 'publish'" . $limit);
         if ($arcresults) {
             foreach ($arcresults as $arcresult) {
                 $url  = get_day_link($arcresult->year, $arcresult->month, $arcresult->dayofmonth);
@@ -257,7 +257,7 @@ function get_archives($type='', $limit='', $format='html', $before = "", $after 
 		if (!isset($start_of_week)) {
 			$start_of_week = 1;
 		}
-		$arcresults = $wpdb->get_results("SELECT DISTINCT WEEK(post_date, $start_of_week) AS `week`, YEAR(post_date) AS yr, DATE_FORMAT(post_date, '%Y-%m-%d') AS yyyymmdd FROM $tableposts WHERE post_date < '$now' AND post_status = 'publish' ORDER BY post_date DESC" . $limit);
+		$arcresults = $wpdb->get_results("SELECT DISTINCT WEEK(post_date, $start_of_week) AS `week`, YEAR(post_date) AS yr, DATE_FORMAT(post_date, '%Y-%m-%d') AS yyyymmdd FROM $tableposts WHERE post_date < '$now' AND post_status = 'publish'" . $limit);
 		$arc_w_last = '';
         if ($arcresults) {
             foreach ($arcresults as $arcresult) {
@@ -338,14 +338,12 @@ function get_calendar($daylength = 1) {
 			FROM $tableposts
 			WHERE post_date < '$thisyear-$thismonth-01'
 			AND post_status = 'publish'
-							  ORDER BY post_date DESC
 							  LIMIT 1");
 	$next = $wpdb->get_row("SELECT  DISTINCT MONTH( post_date ) AS month, YEAR( post_date ) AS year
 			FROM $tableposts
 			WHERE post_date >  '$thisyear-$thismonth-01'
 			AND MONTH( post_date ) != MONTH( '$thisyear-$thismonth-01' )
 			AND post_status = 'publish'
-							  ORDER  BY post_date ASC
 							  LIMIT 1");
 
 	echo '<table id="wp-calendar">
@@ -1450,11 +1448,11 @@ function dropdown_cats($optionall = 1, $all = 'All', $sort_column = 'ID', $sort_
     $query .= "  DAYOFMONTH(MAX(post_date)) AS lastday, MONTH(MAX(post_date)) AS lastmonth";
     $query .= " FROM $tablecategories LEFT JOIN $tableposts ON cat_ID = post_category";
     $query .= " WHERE cat_ID > 0 ";
-    $query .= " GROUP BY post_category ";
+    $query .= " GROUP BY cat_ID ";
     if (intval($hide_empty) == 1) {
         $query .= " HAVING cat_count > 0";
     }
-    $query .= " ORDER BY $sort_column $sort_order, post_date DESC";
+    $query .= " ORDER BY $sort_column $sort_order";
 
 	$categories = $wpdb->get_results($query);
 	echo "<select name='cat' class='postform'>\n";
@@ -1499,12 +1497,12 @@ function list_cats($optionall = 1, $all = 'All', $sort_column = 'ID', $sort_orde
 		FROM $tablecategories LEFT JOIN $tablepost2cat ON (cat_ID = category_id)
 		LEFT JOIN $tableposts ON (ID = post_id)
 		WHERE cat_ID > 0 
-		GROUP BY category_id
+		GROUP BY cat_ID
 		";
     if (intval($hide_empty) == 1) {
         $query .= " HAVING cat_count > 0";
     }
-    $query .= " ORDER BY $sort_column $sort_order, post_date DESC";
+    $query .= " ORDER BY $sort_column $sort_order";
 
 	$categories = $wpdb->get_results($query);
 	if (!$categories) {
