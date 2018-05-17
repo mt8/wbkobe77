@@ -236,11 +236,7 @@ function convert_chars($content,$flag='obsolete attribute left there for backwar
 	
 	if ($use_htmltrans) {
 
-		// converts lone & characters into &#38; (a.k.a. &amp;)
-		$content = preg_replace('/&[^#](?![a-z]*;)/ie', '"&#38;".substr("\0",1)', $content);
-
 		// converts HTML-entities to their display values in order to convert them again later
-		$content = preg_replace('/['.chr(127).'-'.chr(255).']/e', '"&#".ord(\'\0\').";"', $content );
 		$content = strtr($content, $wp_htmltrans);
 
 		// now converting: Windows CP1252 => Unicode (valid HTML)
@@ -278,7 +274,6 @@ function convert_bbcode_email($content) {
 		"'<a href=\"mailto:'.antispambot('\\1').'\">\\2</a>'"
 	);
 
-	$content = preg_replace($bbcode_email["in"], $bbcode_email["out"], $content);
 	return $content;
 }
 
