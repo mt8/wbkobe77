@@ -559,6 +559,7 @@ function get_settings($setting) {
 
 function get_alloptions() {
     global $tableoptions, $wpdb;
+    $all_options = new stdClass;
     $options = $wpdb->get_results("SELECT option_name, option_value FROM $tableoptions");
     if ($options) {
         foreach ($options as $option) {
