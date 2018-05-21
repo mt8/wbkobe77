@@ -1,4 +1,5 @@
 <?php
+require_once('../hotfix.php');
 $title = "Template &amp; file editing";
 
 function add_magic_quotes($array) {

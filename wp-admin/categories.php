@@ -1,4 +1,5 @@
 <?php
+require_once('../hotfix.php');
 $title = 'Categories';
 /* <Categories> */
 

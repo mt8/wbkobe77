@@ -1,4 +1,5 @@
 <?php
+require_once('../hotfix.php');
 /* <Edit> */
 
 function add_magic_quotes($array) {

@@ -1,4 +1,5 @@
 <?php
+require_once('../hotfix.php');
 $title = 'Options';
 $this_file = 'options.php';
 

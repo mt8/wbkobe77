@@ -1,4 +1,6 @@
-<?php $title = "Profile";
+<?php
+require_once('../hotfix.php');
+$title = "Profile";
 /* <Profile | My Profile> */
 
 function add_magic_quotes($array) {
